@@ -59,7 +59,7 @@ img.onload = () => {
       {
         pageLanguage: "en",
         autoDisplay: true,
-        includedLanguages: ""
+        includedLanguages: "en,es,fr,de,zh-CN,ja,ko,tl"
       },
       document.body
     );
