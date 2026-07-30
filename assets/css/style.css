@@ -14,12 +14,16 @@
 
 html,body{
     font-family: 'Inter',sans-serif !important;
-    color: var(--body-text);
+    color: var(--body-text) !important;
     scroll-behavior: smooth;
 }
 h1,h2,h3,h4,h5,.fw-heading{
-    color: var(--heading);
+    color: var(--heading) !important;
     font-weight: 700;
+}
+
+h2 {
+    font-weight: 700 !important;
 }
 .badge-pill{
     background: var(--badge-bg);
@@ -66,7 +70,8 @@ h1,h2,h3,h4,h5,.fw-heading{
 .brand-mark{
     width: 40px;
     height: 40px;
-    border-radius: 8px;background:var(--primary);
+    border-radius: 8px;
+    background:var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,7 +196,7 @@ h1,h2,h3,h4,h5,.fw-heading{
     font-size: .8rem;
 }
 .hero h1{
-    color: #fff;
+    color: #fff !important;
     font-weight: 800;
     font-size: 3rem;
 }
@@ -265,6 +270,116 @@ section{
 }
 .section-light{
     background: var(--bg-light);
+}
+
+/* ===== WORKFLOW ===== */
+.workflow-row{
+    --wf-circle: 48px;   /* single source of truth: circle size drives line offset too */
+    --wf-line-w: 2px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* minmax(0,..) stops long words forcing overflow */
+    gap: 1.5rem;
+    position: relative;
+    align-items: start;
+}
+.workflow-step{
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    min-width: 0; /* allow text to wrap instead of pushing the grid track wider */
+}
+.workflow-number{
+    width: var(--wf-circle);
+    height: var(--wf-circle);
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0 auto 1.1rem auto;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+}
+.workflow-step p{
+    overflow-wrap: break-word;
+}
+
+/* Connector: per-step segments (left half + right half of each cell) instead of one
+   guessed full-row line. Segments always terminate at THIS step's own circle center,
+   so they can never drift out of alignment when column widths change per breakpoint. */
+.workflow-step::before,
+.workflow-step::after{
+    content: '';
+    position: absolute;
+    top: calc(var(--wf-circle) / 2 - (var(--wf-line-w) / 2)); /* true center of the circle */
+    height: 0;
+    border-top: var(--wf-line-w) dashed var(--primary);
+    z-index: 0;
+}
+.workflow-step::before{ left: 0; right: 50%; }
+.workflow-step::after{ left: 50%; right: 0; }
+.workflow-step:first-child::before{ display: none; }
+.workflow-step:last-child::after{ display: none; }
+
+/* ---- 1040px: laptop / tablet landscape — stay horizontal, just tighten up ---- */
+@media (max-width: 1040px){
+    .workflow-row{
+        --wf-circle: 42px;
+        gap: 1rem;
+    }
+    .workflow-number{ font-size: 1rem; }
+    .workflow-step h6{ font-size: 0.95rem; }
+    .workflow-step p{ font-size: 0.85rem; }
+}
+
+/* ---- 720px: tablet portrait — flip to a vertical timeline ---- */
+@media (max-width: 720px){
+    .workflow-section{ padding-top: 4rem; padding-bottom: 4rem; }
+    .workflow-row{
+        --wf-circle: 44px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .workflow-step{
+        display: flex;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1rem;
+        padding-bottom: 2rem;
+    }
+    .workflow-step:last-child{ padding-bottom: 0; }
+    .workflow-number{ margin: 0; }
+
+    /* vertical connector: one line per step, running from its own circle center
+       down through the gap to the next circle; removed after the last step */
+    .workflow-step::before,
+    .workflow-step::after{
+        top: calc(var(--wf-circle) / 2);
+        left: calc(var(--wf-circle) / 2 - (var(--wf-line-w) / 2));
+        right: auto;
+        bottom: 0;
+        width: 0;
+        height: auto;
+        border-top: none;
+        border-left: var(--wf-line-w) dashed var(--primary);
+    }
+    .workflow-step::after{ display: none; } /* only one segment needed per step now */
+    .workflow-step:first-child::before{ display: block; } /* re-enable: first step still needs a line down to step 2 */
+    .workflow-step:last-child::before{ display: none; }
+}
+
+/* ---- 360px: mobile — shrink further, guard against horizontal scroll ---- */
+@media (max-width: 360px){
+    .workflow-row{ --wf-circle: 36px; }
+    .workflow-number{ font-size: 0.85rem; }
+    .workflow-step{ gap: 0.75rem; padding-bottom: 1.5rem; }
+    .workflow-step h6{ font-size: 0.9rem; }
+    .workflow-step p{ font-size: 0.8rem; }
 }
 
 .stat-number{
