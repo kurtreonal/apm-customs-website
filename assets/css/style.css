@@ -62,11 +62,27 @@ h2 {
     color: #fff;
 }
 
-/* Navbar */
+/* ============================================================
+   NAVBAR — responsive refactor
+   Breakpoints tested: 1440 / 1040 (992–1399 bracket) / 768 (down
+   to 576) / 360 (below 576). See explanation for the math behind
+   each tier. Compound selectors like ".navbar-custom .container"
+   are used wherever a plain single-class selector would collide
+   with a same-name Bootstrap component class that loads after
+   this stylesheet.
+   ============================================================ */
 .navbar-custom{
     height: 90px;
     box-shadow: 0 1px 0 var(--border-c);
-    background: #fff;}
+    background: #fff;
+}
+.navbar-custom .container{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+.navbar-brand{
+    gap: .75rem;
+}
 .brand-mark{
     width: 40px;
     height: 40px;
@@ -77,6 +93,7 @@ h2 {
     justify-content: center;
     color: #fff;
     font-size: 1.2rem;
+    flex-shrink: 0;
 }
 .brand-text{
     display: flex;
@@ -84,14 +101,13 @@ h2 {
     justify-content: center;
     line-height: 1;
 }
-
 .brand-title{
     font-size: 1rem;
     font-weight: 800;
     color: var(--heading);
     text-transform: uppercase;
+    white-space: nowrap;
 }
-
 .brand-subtitle{
     margin-top: 6px;
     font-size: .85rem;
@@ -99,7 +115,108 @@ h2 {
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 1px;
+    white-space: nowrap;
 }
+
+/* Nav links (fully custom — deliberately NOT reusing Bootstrap's
+   .navbar-nav so there is zero specificity/load-order fight) */
+.nav-links{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    margin: 1.5rem 0 0 0;
+    padding: 0;
+    gap: 1rem;
+}
+.nav-links .nav-link-custom{
+    display: inline-block;
+    color: var(--heading);
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: .5rem .9rem;
+    font-size: 1rem;
+}
+.nav-link-custom:hover{
+    color: var(--primary);
+}
+@media (min-width: 992px){
+    #mainNav{
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: center;
+    }
+    .nav-links{
+        flex-direction: row;
+        margin: 0;
+        gap: 2rem;
+    }
+}
+
+/* Right-hand action group: language switcher + CTA + toggler.
+   Lives outside #mainNav so it stays visible at every breakpoint. */
+.navbar-actions{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+}
+
+/* Language switcher */
+#lang-switcher{
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border: 1px solid var(--border-c);
+    border-radius: 50px;
+    padding: 4px;
+    width: 220px;
+    flex-shrink: 0;
+}
+.lang-slider-thumb{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc((100% - 8px) / 3);
+    background: var(--badge-bg);
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 0;
+    pointer-events: none;
+}
+/* Convention for the JS wiring: toggle one of these on .lang-slider-thumb
+   and set the matching button's `active` class + aria-pressed. */
+.lang-slider-thumb.pos-1{ transform: translateX(100%); }
+.lang-slider-thumb.pos-2{ transform: translateX(200%); }
+.lang-opt{
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--body-text);
+    padding: .35rem .5rem;
+    border-radius: 50px;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: color .2s ease;
+}
+.lang-opt:hover{
+    color: var(--primary);
+}
+.lang-opt.active{
+    color: var(--primary);
+}
+
+/* CTA */
 .nav-cta{
     background: var(--dark);
     color: #fff;
@@ -107,17 +224,90 @@ h2 {
     border-radius: 6px;
     padding: .6rem 1.4rem;
     font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 .nav-cta:hover{
     color: #fff;
     opacity: .9;
 }
-.nav-link-custom{
-    color: var(--heading);
-    font-weight: 500;
- }
-.nav-link-custom:hover{
-    color: var(--primary);
+.nav-cta-short{ display: none; }
+
+/* Hamburger toggler — compound selector so it beats Bootstrap's
+   same-named .navbar-toggler rules regardless of stylesheet order */
+.navbar-custom .navbar-toggler{
+    border: 1px solid var(--border-c);
+    border-radius: 6px;
+    padding: .35rem .6rem;
+    box-shadow: none;
+}
+.navbar-custom .navbar-toggler:focus{
+    box-shadow: 0 0 0 3px rgba(2,132,199,.25);
+}
+
+/* Keyboard accessibility */
+.nav-link-custom:focus-visible,
+.nav-cta:focus-visible,
+.lang-opt:focus-visible,
+.navbar-custom .navbar-toggler:focus-visible{
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ---- ≤1399px: small laptop tier (covers the 992–1399 bracket,
+   i.e. wherever Bootstrap's .container is 960px or 1140px — see
+   explanation for why this can't stop at 1040px alone) ---- */
+@media (max-width: 1399px){
+    .navbar-custom .container{ padding-left: .75rem; padding-right: .75rem; }
+    .navbar-brand{ gap: .5rem; }
+    .brand-mark{ width: 36px; height: 36px; font-size: 1rem; }
+    .brand-title{ font-size: .9rem; }
+    .brand-subtitle{ font-size: .72rem; margin-top: 4px; }
+    .nav-links{ gap: .85rem; }
+    .nav-links .nav-link-custom{ font-size: .85rem; padding: .4rem .5rem; }
+    #lang-switcher{ width: 150px; }
+    .lang-opt{ font-size: .68rem; padding: .3rem .35rem; }
+    .nav-cta{ padding: .45rem .8rem; font-size: .85rem; }
+    .navbar-actions{ gap: .6rem; }
+}
+
+/* ---- ≤768px: tablet — Bootstrap's own <992px breakpoint already
+   swaps to the hamburger; this tier keeps the visible logo/lang/CTA
+   row compact once the nav links have moved into the collapse panel.
+   Verified against the tightest case in this bracket, the 540px
+   container at viewport 576px, not just the 720px case at 768px. ---- */
+@media (max-width: 768px){
+    .navbar-custom{ height: 72px; }
+    .navbar-custom .container{ padding-left: .65rem; padding-right: .65rem; }
+    .brand-mark{ width: 32px; height: 32px; font-size: .95rem; }
+    .brand-title{ font-size: .82rem; }
+    .brand-subtitle{ font-size: .65rem; margin-top: 3px; }
+    .navbar-brand{ gap: .45rem; }
+    .navbar-actions{ gap: .5rem; }
+    #lang-switcher{ width: 112px; padding: 3px; }
+    .lang-opt{ font-size: .62rem; padding: .28rem .3rem; }
+    .nav-cta{ padding: .45rem .8rem; font-size: .8rem; }
+    .navbar-custom .navbar-toggler{ padding: .3rem .5rem; font-size: 1rem; }
+}
+
+/* ---- ≤576px: mobile — aligned to Bootstrap's own sm breakpoint
+   so there's no dead zone between this and the tablet tier above.
+   CTA swaps to its short label here. ---- */
+@media (max-width: 576px){
+    .navbar-custom{ height: 60px; }
+    .navbar-custom .container{ padding-left: .5rem; padding-right: .5rem; }
+    .brand-mark{ width: 26px; height: 26px; font-size: .8rem; border-radius: 6px; }
+    .brand-title{ font-size: .68rem; }
+    .brand-subtitle{ font-size: .55rem; margin-top: 2px; letter-spacing: .3px; }
+    .navbar-brand{ gap: .35rem; }
+    .navbar-actions{ gap: .35rem; }
+    #lang-switcher{ width: 78px; padding: 2px; }
+    .lang-opt{ font-size: .56rem; padding: .2rem .1rem; }
+    .nav-cta-full{ display: none; }
+    .nav-cta-short{ display: inline; }
+    .nav-cta{ padding: .4rem .6rem; font-size: .68rem; }
+    .navbar-custom .navbar-toggler{ padding: .2rem .35rem; font-size: .85rem; }
 }
 
 /* Hero */
