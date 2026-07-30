@@ -216,6 +216,33 @@ h2 {
     color: var(--primary);
 }
 
+/* Loading state — while a translation request is in flight */
+#lang-switcher.is-loading .lang-opt{
+    pointer-events: none;
+}
+.lang-opt.is-pending{
+    color: var(--primary);
+    opacity: .65;
+}
+.lang-opt.is-pending::after{
+    content: '';
+    display: inline-block;
+    width: .55em;
+    height: .55em;
+    margin-left: .35em;
+    vertical-align: -1px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: lang-spin .6s linear infinite;
+}
+@keyframes lang-spin{
+    to{ transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce){
+    .lang-opt.is-pending::after{ animation: none; }
+}
+
 /* CTA */
 .nav-cta{
     background: var(--dark);
