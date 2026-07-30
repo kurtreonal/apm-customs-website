@@ -18,7 +18,7 @@ img.onload = () => {
     ctx.drawImage(img,0,0,width,height);
 
     const pixels = ctx.getImageData(0,0,width,height).data;
-
+        
     let text = "";
 
     for(let y=0;y<height;y++){
@@ -45,3 +45,32 @@ img.onload = () => {
 
     output.textContent=text;
 };
+
+// ---- Auto Language Translate (added) ----
+(function () {
+  function loadGoogleTranslate() {
+    const script = document.createElement("script");
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.body.appendChild(script);
+  }
+
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        autoDisplay: true,
+        includedLanguages: ""
+      },
+      document.body
+    );
+  };
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .goog-te-banner-frame, .skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+  `;
+  document.head.appendChild(style);
+
+  loadGoogleTranslate();
+})();
