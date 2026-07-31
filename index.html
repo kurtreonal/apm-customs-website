@@ -362,26 +362,26 @@
 
             <form id="contact-form" novalidate>
                 <div class="mb-3">
-                <label for="cf-name" class="form-label-custom">Full name</label>
-                <input type="text" id="cf-name" name="name" class="form-control-custom" placeholder="Juan Dela Cruz" required minlength="2" autocomplete="name">
+                <label for="name" class="form-label-custom">Full name</label>
+                <input type="text" id="name" name="name" class="form-control-custom" placeholder="Juan Dela Cruz" required minlength="2" autocomplete="name">
                 <div class="invalid-feedback-custom">Please enter your full name.</div>
                 </div>
 
                 <div class="mb-3">
-                <label for="cf-email" class="form-label-custom">Email address</label>
-                <input type="email" id="cf-email" name="email" class="form-control-custom" placeholder="you@company.com" required autocomplete="email">
+                <label for="email" class="form-label-custom">Email address</label>
+                <input type="email" id="email" name="email" class="form-control-custom" placeholder="you@company.com" required autocomplete="email">
                 <div class="invalid-feedback-custom">Please enter a valid email address.</div>
                 </div>
 
                 <div class="mb-3">
-                <label for="cf-phone" class="form-label-custom">Phone number</label>
-                <input type="tel" id="cf-phone" name="phone" class="form-control-custom" placeholder="09XX XXX XXXX" required pattern="^[0-9+\-\s()]{7,20}$" inputmode="tel" autocomplete="tel">
+                <label for="phone" class="form-label-custom">Phone number</label>
+                <input type="tel" id="phone" name="phone" class="form-control-custom" placeholder="09XX XXX XXXX" required pattern="^[0-9+\-\s()]{7,20}$" inputmode="tel" autocomplete="tel">
                 <div class="invalid-feedback-custom">Please enter a valid phone number.</div>
                 </div>
 
                 <div class="mb-3">
-                <label for="cf-service" class="form-label-custom">Service needed</label>
-                <select id="cf-service" name="service" class="form-control-custom" required>
+                <label for="service" class="form-label-custom">Service needed</label>
+                <select id="service" name="service" class="form-control-custom" required>
                     <option value="" selected disabled>Select a service</option>
                     <option value="Customs clearance and brokerage assistance">Customs clearance and brokerage assistance</option>
                     <option value="Import and export documentation support">Import and export documentation support</option>
@@ -394,12 +394,13 @@
                 </div>
 
                 <div class="mb-4">
-                <label for="cf-message" class="form-label-custom">Message</label>
-                <textarea id="cf-message" name="message" class="form-control-custom" rows="4" placeholder="Tell us about your shipment or documentation needs" required minlength="10"></textarea>
+                <label for="message" class="form-label-custom">Message</label>
+                <textarea id="message" name="message" class="form-control-custom" rows="4" placeholder="Tell us about your shipment or documentation needs" required minlength="10"></textarea>
                 <div class="invalid-feedback-custom">Please tell us a bit about your shipment or documentation needs.</div>
                 </div>
 
-                <button type="submit" class="btn-primary-custom w-100">Send Request</button>
+                    <button type="submit" class="btn-primary-custom w-100">Send Request</button>
+                <input type="text" id="bot-field" name="bot_field" class="form-control-custom" style="position:absolute; left:-9999px; top:-9999px; opacity:0; height:0; width:0; pointer-events:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
             </form>
             </div>
         </div>

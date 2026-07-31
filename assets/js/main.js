@@ -261,6 +261,8 @@ const style = document.createElement("style");
   loadGoogleTranslate();
 })();
 
+let isSendmailActive = false;
+
 // ---- Contact form validation (front-end only — static site, no backend) ----
 (function () {
   const form = document.getElementById("contact-form");
@@ -287,6 +289,7 @@ const style = document.createElement("style");
       feedback.classList.remove("show");
     }
   }
+
 
   // Relies on the browser's built-in constraint validation (required,
   // type="email", the phone pattern, minlength) — no extra validation
@@ -330,12 +333,62 @@ const style = document.createElement("style");
       return;
     }
 
+    const botField = document.getElementById("bot-field");
+    if (botField && botField.value.trim() !== "") {
+      console.warn("Spam bot detected — form submission blocked.");
+      return;
+    }
+
+    if (isSendmailActive) {
+      return;
+    }
+
     // This is a static site with no backend (per the project brief) —
-    // there's nothing to actually send the request to yet. Once a real
-    // endpoint or mailto: handoff exists, that call goes here. For now,
-    // confirm receipt to the visitor and reset the form.
-    if (successBox) successBox.hidden = false;
-    form.reset();
-    fields.forEach(clearError);
+    // the EmailJS send happens here instead of a server endpoint.
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+    }
+
+    isSendmailActive = true;
+
+    sendMail()
+      .then(() => {
+        if (successBox) successBox.hidden = false;
+        form.reset();
+        fields.forEach(clearError);
+      })
+      .catch((err) => {
+        console.error("EmailJS send error:", err);
+        alert("Failed to send request. Please try again later.");
+      })
+      .finally(() => {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = "Send Request";
+        }
+        isSendmailActive = false;
+      });
   });
 })();
+
+function sendMail(){
+  const params = {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    service: document.getElementById("service").value,
+    message: document.getElementById("message").value.trim(),
+    submittedAt: new Date().toISOString(),
+  };
+
+  if (!window.emailjs || typeof window.emailjs.send !== "function") {
+    return Promise.reject(new Error("EmailJS is not loaded yet."));
+  }
+
+  return emailjs.send("service_4qsk5kd", "template_tmtb9gb", params);
+}
+  
+
+
