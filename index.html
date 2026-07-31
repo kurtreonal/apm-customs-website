@@ -14,10 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!--  NAVBAR  -->
+    <!--  NAVBAR!  -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-0">
-    <div class="container d-flex align-items-center justify-content-between" style="height:90px;">
-    <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+    <div class="container d-flex align-items-center justify-content-between">
+    <a class="navbar-brand d-flex align-items-center" href="#">
         <span class="brand-mark">
             <i class="bi bi-box-seam"></i>
         </span>
@@ -27,29 +27,42 @@
             <div class="brand-subtitle">BROKERAGE</div>
         </div>
     </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+
+        <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="nav-links">
+            <li><a class="nav-link-custom" href="#hero">Home</a></li>
+            <li><a class="nav-link-custom" href="#about">About</a></li>
+            <li><a class="nav-link-custom" href="#services">Services</a></li>
+            <li><a class="nav-link-custom" href="#process">Why Choose Us?</a></li>
+            <li><a class="nav-link-custom" href="#cta-section">Contact</a></li>
+        </ul>
+        </div>
+
+        <div class="navbar-actions">
+        <div id="lang-switcher" class="notranslate" role="group" aria-label="Language selector" translate="no" aria-busy="false">
+            <span class="lang-slider-thumb" aria-hidden="true"></span>
+            <button type="button" class="lang-opt active" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" class="lang-opt" data-lang="zh-CN" aria-pressed="false">CN</button>
+            <button type="button" class="lang-opt" data-lang="ja" aria-pressed="false">JP</button>
+            <span id="lang-switch-status" class="visually-hidden" aria-live="polite"></span>
+        </div>
+
+        <a href="#contact" class="nav-cta">
+            <span class="nav-cta-full">Request a Consultation</span>
+            <span class="nav-cta-short">Consult</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse flex-grow-0" id="mainNav">
-        <ul class="navbar-nav mx-auto mx-lg-4 gap-lg-4 text-center">
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="#hero">Home</a></li>
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="#about">About</a></li>
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="#services">Services</a></li>
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="#process">Why Choose Us?</a></li>
-            <li class="nav-item"><a class="nav-link nav-link-custom" href="#cta-section">Contact</a></li>
-        </ul>
-     <div id="lang-switcher" class="notranslate" translate="no">
-                <span class="lang-slider-thumb"></span>
-                <button type="button" class="lang-opt active" data-lang="en">US EN</button>
-                <button type="button" class="lang-opt" data-lang="zh-CN">CN 中文</button>
-                <button type="button" class="lang-opt" data-lang="ja">JP 日本語</button>
-                </div>
-                <!-- Hidden — required by Google's engine, not shown to visitors -->
-    <div id="google_translate_element" style="display:none;"></div>
-        <a href="#contact" class="nav-cta d-inline-block text-center">Request a Consultation</a>
         </div>
     </div>
     </nav>
+
+    <!-- Required by main.js: google.translate.TranslateElement mounts here.
+         Kept empty/hidden — the visible UI is the .lang-opt pill buttons. -->
+    <div id="google_translate_element" style="display:none;"></div>
 
     <!--  HERO  -->
     <header id="hero" class="hero">
@@ -70,20 +83,22 @@
     </div>
     </header>
 
- <!-- SERVICES -->
-<section id="services" class="section-light">
+    <!--  ABOUT THE COMPANY  -->
+    <section id="about" class="section-light">
     <div class="container">
+
         <div class="row align-items-start">
+            <!-- Left Column: About APM -->
             <div class="col-lg-5 mb-5 mb-lg-0">
-                <span class="badge-pill mb-3">ABOUT THE COMPANY</span>
+                <span class="badge-pill mb-3">Our Services</span>
                 <h2 class="mb-3">About APM Customs Brokerage</h2>
                 <p class="mb-4">
                     APM Customs Brokerage was established last February 24, 2011 for the sole purpose of handling customs clearance formalities of one company who requested to have a broker to handle fully all their company importation and exportation. For the first year the company is exclusively attending to this client. As we continuously provide excellent service to our client, from one company we were able to build network of list of companies thru referral from satisfied clients. As of to date, APM Customs Brokerage remain committed to deliver the best service to our clients from Customs Clearance, logistics, consultation until delivery. We may not be a big player in this industry but our service extended to our customers is beyond their expectation.
                 </p>
             </div>
 
+            <!-- Right Column: Our Core Values -->
             <div class="col-lg-7 gy-5">
-                <!-- Large, black, centered heading with no background -->
                 <div class="mb-3 text-center">
                     <h4 class="fw-heading text-dark mb-0" style="text-transform: uppercase; letter-spacing: 0.5px;">OUR CORE VALUES</h4>
                 </div>
@@ -121,80 +136,37 @@
             </div>
         </div>
 
-        <!-- CENTERED OUR MISSION BOX BELOW BOTH COLUMNS -->
+        <!-- Bottom Centered OUR MISSION Row -->
         <div class="row justify-content-center mt-5">
-            <div class="col-lg-8">
-                <div class="p-4 p-md-5 bg-white rounded-3 text-center shadow-sm" style="border:1px solid var(--border-c);">
-                    <strong class="fw-heading d-block mb-2 text-dark fs-5">OUR MISSION</strong>
-                    <p class="mb-0 text-muted fs-6">To deliver reliable, compliant and efficient services to our clients.</p>
+            <div class="col-12 col-md-8 text-center">
+                <div class="p-4 bg-white rounded-3" style="border:1px solid var(--border-c);">
+                    <p class="mb-0">
+                        <strong class="fw-heading d-block mb-1 fs-5">OUR MISSION</strong>
+                        To deliver expertise and exceptional service in customs brokerage.
+                    </p>
                 </div>
             </div>
         </div>
 
     </div>
 </section>
-
-<!--ABOUT-->
-<section id="about" class="bg-white">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <div class="about-photo-card"></div>
-            </div>
-            <div class="col-lg-6">
-                <span class="badge-pill mb-3">ABOUT THE COMPANY</span>
-                <h2 class="mb-3">Licensed brokers who treat your cargo like it's their own</h2>
-                <p class="mb-4">
-                    We combine deep regulatory expertise with a modern digital platform, so you always know
-                    where your shipment stands and never miss a compliance detail.
-                </p>
-                <div class="check-item">
-                    <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
-                    <div>
-                        <h6 class="fw-heading mb-1">Licensed &amp; bonded nationwide</h6>
-                        <p class="mb-0">Fully licensed customs brokers across every U.S. port of entry.</p>
-                    </div>
-                </div>
-                <div class="check-item">
-                    <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
-                    <div>
-                        <h6 class="fw-heading mb-1">24/7 shipment visibility</h6>
-                        <p class="mb-0">Track entry status and documents from any device, any time.</p>
-                    </div>
-                </div>
-                <div class="check-item">
-                    <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
-                    <div>
-                        <h6 class="fw-heading mb-1">Dedicated account brokers</h6>
-                        <p class="mb-0">A named specialist who knows your products and your business.</p>
-                    </div>
-                </div>
-                <div class="check-item">
-                    <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
-                    <div>
-                        <h6 class="fw-heading mb-1">Transparent, flat-rate pricing</h6>
-                        <p class="mb-0">No hidden fees — know your brokerage cost before you ship.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 
     <!--  PROCESS  -->
-    <section id="process" class="bg-white">
+    <section id="services" class="bg-white">
     <div class="container">
-        <div class="text-center mx-auto mb-5" style="max-width:640px;">
-        <span class="badge-pill mb-3">How It Works</span>
-        <h2>A clear, six-step path through customs</h2>
+        <div class="text-center mx-auto mb-5" style="max-width:700px;">
+        <span class="badge-pill mb-3">OUR EXPERTIES</span>
+        <h2>CORE SERVICES</h2>
+        <p class="mb-4 mx-auto" style="max-width:700px;">
+        Talk to a licensed broker today and get a free assessment of your current import workflow.
+        </p>
         </div>
         <div class="row g-4">
         <div class="col-md-6 col-lg-4">
             <div class="card-custom">
             <div class="icon-square"><i class="bi bi-file-earmark-text"></i></div>
             <h5 class="fw-heading">Tariff and Customs Consultancy</h5>
-            <p class="mb-0">Expert guidance on tariff classification and customs regulations for your imports and exports.</p>
+            <p class="mb-0">Expert guidance tariff classification for your imports and exports.</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -208,14 +180,14 @@
             <div class="card-custom">
             <div class="icon-square"><i class="bi bi-shield-check"></i></div>
             <h5 class="fw-heading">Door to Door Services</h5>
-            <p class="mb-0">End-to-end delivery covering domestic locations (Batangas, Cebu, Iloilo, Davao, Cagayan de Oro) and 17+ international destinations.</p>
+            <p class="mb-0">End-to-end delivery covering domestic locatiions (Batangas, Cebu, Iloilo, Davao, Cagayan de Oro) and 17+ international destinations.</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card-custom">
             <div class="icon-square"><i class="bi bi-send-check"></i></div>
             <h5 class="fw-heading">Trucking and Hauling</h5>
-            <p class="mb-0">Transport services for breakbulk, general cargo, and dangerous cargo shipments.</p>
+            <p class="mb-0">Transport services for breakbulk, general cargo and dangerous cargo shipments.</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -228,7 +200,7 @@
         <div class="col-md-6 col-lg-4">
             <div class="card-custom">
             <div class="icon-square"><i class="bi bi-clipboard-data"></i></div>
-            <h5 class="fw-heading">Inbound & Outbound Cargo Handling</h5>
+            <h5 class="fw-heading">Inbound &amp; Outbound Cargo Handling</h5>
             <p class="mb-0">Complete management of incoming and outgoing cargo operations and logistics.</p>
             </div>
         </div>
@@ -236,8 +208,8 @@
     </div>
     </section>
 
-    <!--WORKFLOW-->
-    <section class="section-light workflow-section">
+    <!--WORKFLOW!-->
+    <section id="process" class="section-light workflow-section">
     <div class="container">
         <span class="badge-pill mb-3">WORKFLOW</span>
         <h2 class="mb-3">How It Works</h2>
@@ -275,44 +247,45 @@
     </section>
 
     <!--WHY CHOOSE APM-->
-    <section id="about" class="bg-white">
+    <section id="" class="bg-white">
     <div class="container">
         <div class="row align-items-center g-5">
         <div class="col-lg-6">
             <div class="about-photo-card"></div>
         </div>
         <div class="col-lg-6">
-            <span class="badge-pill mb-3">OUR ADVANTAGE</span>
-            <h2 class="mb-3">Why Choose APM</h2>
+            <span class="badge-pill mb-3">ABOUT THE COMPANY</span>
+            <h2 class="mb-3">Licensed brokers who treat your cargo like it's their own</h2>
             <p class="mb-4">
-                What sets APM Customs Brokerage apart from the rest.
+                We combine deep regulatory expertise with a modern digital platform, so you always know
+                where your shipment stands and never miss a compliance detail.
             </p>
             <div class="check-item">
             <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
             <div>
-                <h6 class="fw-heading mb-1">Established Since 2011</h6>
-                <p class="mb-0">Over a decade of trusted brokerage experience serving importers and exporters.</p>
+                <h6 class="fw-heading mb-1">Licensed &amp; bonded nationwide</h6>
+                <p class="mb-0">Fully licensed customs brokers across every U.S. port of entry.</p>
             </div>
             </div>
             <div class="check-item">
             <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
             <div>
-                <h6 class="fw-heading mb-1">60+ Satisfied Clients</h6>
-                <p class="mb-0">A growing network of loyal clients built through referrals from satisfied customers.</p>
+                <h6 class="fw-heading mb-1">24/7 shipment visibility</h6>
+                <p class="mb-0">Track entry status and documents from any device, any time.</p>
             </div>
             </div>
             <div class="check-item">
             <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
             <div>
-                <h6 class="fw-heading mb-1">All Port of Entry</h6Door>
-                <p class="mb-0">Customs clearance services available across all Philippine ports of entry.</p>
+                <h6 class="fw-heading mb-1">Dedicated account brokers</h6>
+                <p class="mb-0">A named specialist who knows your products and your business.</p>
             </div>
             </div>
             <div class="check-item">
             <div class="icon-circle-sm"><i class="bi bi-check-lg"></i></div>
             <div>
-                <h6 class="fw-heading mb-1">Domestic &amp; International</h6>
-                <p class="mb-0">Door-to-door services spanning the Philippines and 17+ countries worldwide.</p>
+                <h6 class="fw-heading mb-1">Transparent, flat-rate pricing</h6>
+                <p class="mb-0">No hidden fees — know your brokerage cost before you ship.</p>
             </div>
             </div>
         </div>
@@ -331,52 +304,48 @@
     </div>
     </section>
 
-    <!--FAQ + CONTACT-->
-    <section id="faq" class="bg-white">
+    <!--CONTACT INFO + FORM-->
+    <section id="contact-info" class="bg-white">
     <div class="container">
         <div class="row g-5">
         <div class="col-lg-6">
-            <span class="badge-pill mb-3">FAQ</span>
-            <h2 class="mb-4">Common Questions</h2>
-            <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                    How long does customs clearance take?
-                </button>
-                </h2>
-                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">Most entries clear within 24–48 hours once complete documentation is received, assuming no inspection hold is issued by CBP.</div>
+            <span class="badge-pill mb-3">CONTACT</span>
+            <h2 class="mb-3">Contact Us</h2>
+            <p class="mb-4">Have questions or need assistance? Get in touch with our team using the contact information below. We're here to help and look forward to hearing from you.</p>
+
+            <!-- Placeholder contact details — replace with APM-verified info
+                 before launch (per client instruction, not sourced from the
+                 internal company profile document). -->
+            <div class="contact-info-list">
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-geo-alt"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Office Address</h6>
+                <p class="mb-0">Lot 7 F 2&3 Rodriguez Compound, Aurenina Village, Brgy. San Dionisio, Parañaque City 1700, Philippines</p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                    What documents do I need to provide?
-                </button>
-                </h2>
-                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">A commercial invoice, packing list, bill of lading, and any product-specific permits or certificates required for your goods.</div>
+
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-telephone"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Phone Number</h6>
+                <p class="mb-0"><a href="tel:+630000000000" class="contact-link">(+632) 8682 6845 / 8696 7798</a></p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                    Do you handle both imports and exports?
-                </button>
-                </h2>
-                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">Yes. Our brokers manage both import entries and export documentation, including AES filing where required.</div>
+
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-envelope"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Email Address</h6>
+                <p class="mb-0"><a href="mailto:contact@apmcustomsbrokerage.example" class="contact-link">anna@extreme-sea-air.com.ph</a></p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                    Can you help lower our duty costs?
-                </button>
-                </h2>
-                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">We review your classifications for free trade agreement eligibility and duty drawback opportunities as part of every engagement.</div>
+
+            <div class="check-item mb-0">
+                <div class="icon-circle-sm"><i class="bi bi-clock"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Business Hours</h6>
+                <p class="mb-0">Monday – Friday, 8:00 AM – 5:00 PM</p>
                 </div>
             </div>
             </div>
@@ -384,22 +353,53 @@
 
         <div class="col-lg-6" id="contact">
             <div class="contact-card">
-            <h4 class="fw-heading mb-4">Request a Free Quote</h4>
-            <form>
+            <h4 class="fw-heading mb-2">Request a Consultation</h4>
+            <p class="mb-4">Tell us about your shipment or documentation needs and a licensed broker will get back to you.</p>
+
+            <div id="contact-success" class="contact-success mb-4" role="status" hidden>
+                Thanks — your request has been received. We'll be in touch shortly.
+            </div>
+
+            <form id="contact-form" novalidate>
                 <div class="mb-3">
-        
-                <input type="text" class="form-control-custom" id="name" placeholder="Full name" required>
+                <label for="cf-name" class="form-label-custom">Full name</label>
+                <input type="text" id="cf-name" name="name" class="form-control-custom" placeholder="Juan Dela Cruz" required minlength="2" autocomplete="name">
+                <div class="invalid-feedback-custom">Please enter your full name.</div>
                 </div>
+
                 <div class="mb-3">
-                <input type="email" class="form-control-custom" id="email" placeholder="Work email" required>
+                <label for="cf-email" class="form-label-custom">Email address</label>
+                <input type="email" id="cf-email" name="email" class="form-control-custom" placeholder="you@company.com" required autocomplete="email">
+                <div class="invalid-feedback-custom">Please enter a valid email address.</div>
                 </div>
+
                 <div class="mb-3">
-                <input type="text" class="form-control-custom" id="company" placeholder="Company name">
+                <label for="cf-phone" class="form-label-custom">Phone number</label>
+                <input type="tel" id="cf-phone" name="phone" class="form-control-custom" placeholder="09XX XXX XXXX" required pattern="^[0-9+\-\s()]{7,20}$" inputmode="tel" autocomplete="tel">
+                <div class="invalid-feedback-custom">Please enter a valid phone number.</div>
                 </div>
+
+                <div class="mb-3">
+                <label for="cf-service" class="form-label-custom">Service needed</label>
+                <select id="cf-service" name="service" class="form-control-custom" required>
+                    <option value="" selected disabled>Select a service</option>
+                    <option value="Customs clearance and brokerage assistance">Customs clearance and brokerage assistance</option>
+                    <option value="Import and export documentation support">Import and export documentation support</option>
+                    <option value="Tariff classification and customs valuation assistance">Tariff classification and customs valuation assistance</option>
+                    <option value="Shipment and freight coordination">Shipment and freight coordination</option>
+                    <option value="Trucking or delivery coordination">Trucking or delivery coordination</option>
+                    <option value="Regulatory and compliance consultation">Regulatory and compliance consultation</option>
+                </select>
+                <div class="invalid-feedback-custom">Please select the service you need.</div>
+                </div>
+
                 <div class="mb-4">
-                <textarea class="form-control-custom" id="message" rows="4" placeholder="Tell us about your shipment"></textarea>
+                <label for="cf-message" class="form-label-custom">Message</label>
+                <textarea id="cf-message" name="message" class="form-control-custom" rows="4" placeholder="Tell us about your shipment or documentation needs" required minlength="10"></textarea>
+                <div class="invalid-feedback-custom">Please tell us a bit about your shipment or documentation needs.</div>
                 </div>
-                <button id="send-request-btn" type="button" class="btn-primary-custom w-100" onclick="sendmail()">Send Request</button>
+
+                <button type="submit" class="btn-primary-custom w-100">Send Request</button>
             </form>
             </div>
         </div>
@@ -414,24 +414,23 @@
         <div class="col-lg-4">
             <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="#">
             <span class="brand-mark"><i class="bi bi-box-seam"></i></span>
-            <span class="fw-bold fs-5 text-white">APM Customs Brokerage</span>
+            <span class="fw-bold fs-5 text-white">ClearPort</span>
             </a>
-            <p>Reliable customs clearance, logistics, consultation, and door to delivery services.</p>
+            <p>Licensed U.S. customs brokerage helping importers move goods across borders faster and in full compliance.</p>
         </div>
         <div class="col-6 col-lg-2">
-            <h5 class="mb-3">Quick Links</h5>
+            <h5 class="mb-3">Company</h5>
             <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><a href="#about">Home</a></li>
-            <li><a href="#services">About</a></li>
-            <li><a href="#process">Services</a></li>
-            <li><a href="#why">Why Choose Us</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#">Careers</a></li>
             </ul>
         </div>
         <div class="col-6 col-lg-2">
             <h5 class="mb-3">Resources</h5>
             <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact-info">Contact</a></li>
             <li><a href="#">Trade Updates</a></li>
             <li><a href="#">Duty Calculator</a></li>
             <li><a href="#">HTS Lookup</a></li>
@@ -440,7 +439,7 @@
         <div class="col-lg-4">
             <h5 class="mb-3">Contact</h5>
             <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><i class="bi bi-geo-alt me-2"></i>Lot 7 F 2&amp;3, Rodriguez Compound, Brgy. San Dionisio, Paranaque City, 1700, Philippines</li>
+            <li><i class="bi bi-geo-alt me-2"></i>Lot 7 F 2&3 Rodriguez Compound, Aurenina Village, Brgy. San Dionisio, Parañaque City 1700, Philippines</li>
             <li><i class="bi bi-telephone me-2"></i>(+632) 8682 6845 / 8696 7798</li>
             <li><i class="bi bi-envelope me-2"></i>anna@extreme-sea-air.com.ph</li>
             </ul>
@@ -448,7 +447,7 @@
         </div>
         <hr class="footer-divider my-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-        <small>&copy; 2026 APM Customs Brokerage. All rights reserved.</small>
+        <small>&copy; 2026 ClearPort Customs Brokerage. All rights reserved.</small>
         <div class="d-flex gap-3">
             <a href="#"><i class="bi bi-linkedin"></i></a>
             <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -460,7 +459,7 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-<!-- Translation JS -->
+<!-- Script -->
 <script src="assets/js/main.js"></script>
 <!-- EmailJS -->
 <script type="text/javascript"
