@@ -446,114 +446,185 @@ section{
     background: var(--bg-light);
 }
 
-/* ===== WORKFLOW ===== */
-.workflow-row{
-    --wf-circle: 48px;   /* single source of truth: circle size drives line offset too */
-    --wf-line-w: 2px;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr)); /* minmax(0,..) stops long words forcing overflow */
-    gap: 1.5rem;
-    position: relative;
-    align-items: start;
-}
-.workflow-step{
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    min-width: 0; /* allow text to wrap instead of pushing the grid track wider */
-}
-.workflow-number{
-    width: var(--wf-circle);
-    height: var(--wf-circle);
-    border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin: 0 auto 1.1rem auto;
-    position: relative;
-    z-index: 2;
-    flex-shrink: 0;
-}
-.workflow-step p{
-    overflow-wrap: break-word;
+/* ============================================================
+   WORKFLOW — SCROLL STORYTELLING
+   Motion uses transform / opacity / filter only (GPU-accelerated).
+   Easing curves: expo-out for entrances, ease-in-out for state
+   changes — deliberate, no bounce, no spin.
+   ============================================================ */
+:root{
+  --wf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --wf-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --wf-glow: rgba(2, 132, 199, .35);
 }
 
-/* Connector: per-step segments (left half + right half of each cell) instead of one
-   guessed full-row line. Segments always terminate at THIS step's own circle center,
-   so they can never drift out of alignment when column widths change per breakpoint. */
-.workflow-step::before,
-.workflow-step::after{
-    content: '';
-    position: absolute;
-    top: calc(var(--wf-circle) / 2 - (var(--wf-line-w) / 2)); /* true center of the circle */
-    height: 0;
-    border-top: var(--wf-line-w) dashed var(--primary);
-    z-index: 0;
+.workflow-section [data-wf-badge],
+.workflow-section [data-wf-heading],
+.workflow-section [data-wf-desc],
+.workflow-section [data-wf-timeline]{
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .8s var(--wf-ease-out), transform .8s var(--wf-ease-out);
 }
-.workflow-step::before{ left: 0; right: 50%; }
-.workflow-step::after{ left: 50%; right: 0; }
-.workflow-step:first-child::before{ display: none; }
-.workflow-step:last-child::after{ display: none; }
-
-/* ---- 1040px: laptop / tablet landscape — stay horizontal, just tighten up ---- */
-@media (max-width: 1040px){
-    .workflow-row{
-        --wf-circle: 42px;
-        gap: 1rem;
-    }
-    .workflow-number{ font-size: 1rem; }
-    .workflow-step h6{ font-size: 0.95rem; }
-    .workflow-step p{ font-size: 0.85rem; }
+.workflow-section.wf-in-view [data-wf-badge]{
+  opacity: 1; transform: none; transition-delay: .05s;
+}
+.workflow-section.wf-in-view [data-wf-heading]{
+  opacity: 1; transform: none; transition-delay: .18s;
+}
+.workflow-section.wf-in-view [data-wf-desc]{
+  opacity: 1; transform: none; transition-delay: .30s;
+}
+.workflow-section.wf-in-view [data-wf-timeline]{
+  opacity: 1; transform: none; transition-delay: .45s;
 }
 
-/* ---- 720px: tablet portrait — flip to a vertical timeline ---- */
-@media (max-width: 720px){
-    .workflow-section{ padding-top: 4rem; padding-bottom: 4rem; }
-    .workflow-row{
-        --wf-circle: 44px;
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-    }
-    .workflow-step{
-        display: flex;
-        align-items: flex-start;
-        text-align: left;
-        gap: 1rem;
-        padding-bottom: 2rem;
-    }
-    .workflow-step:last-child{ padding-bottom: 0; }
-    .workflow-number{ margin: 0; }
-
-    /* vertical connector: one line per step, running from its own circle center
-       down through the gap to the next circle; removed after the last step */
-    .workflow-step::before,
-    .workflow-step::after{
-        top: calc(var(--wf-circle) / 2);
-        left: calc(var(--wf-circle) / 2 - (var(--wf-line-w) / 2));
-        right: auto;
-        bottom: 0;
-        width: 0;
-        height: auto;
-        border-top: none;
-        border-left: var(--wf-line-w) dashed var(--primary);
-    }
-    .workflow-step::after{ display: none; } /* only one segment needed per step now */
-    .workflow-step:first-child::before{ display: block; } /* re-enable: first step still needs a line down to step 2 */
-    .workflow-step:last-child::before{ display: none; }
+.wf-timeline{
+  position: relative;
+  margin-top: 1rem;
+}
+.wf-steps{
+  display: flex;
+  flex-direction: column;
 }
 
-/* ---- 360px: mobile — shrink further, guard against horizontal scroll ---- */
-@media (max-width: 360px){
-    .workflow-row{ --wf-circle: 36px; }
-    .workflow-number{ font-size: 0.85rem; }
-    .workflow-step{ gap: 0.75rem; padding-bottom: 1.5rem; }
-    .workflow-step h6{ font-size: 0.9rem; }
-    .workflow-step p{ font-size: 0.8rem; }
+.wf-rail{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 39px;
+  width: 2px;
+  background: var(--border-c);
+  border-radius: 2px;
+}
+.wf-rail-fill{
+  width: 100%;
+  height: 0%;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: height .05s linear;
+}
+
+.wf-step{
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  column-gap: 1.75rem;
+  padding: 2.25rem 0;
+  align-items: start;
+}
+
+.wf-step-marker{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wf-step-number{
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary);
+  opacity: .32;
+  transform: scale(.82);
+  transition: opacity .6s var(--wf-ease-inout), transform .6s var(--wf-ease-inout), color .6s var(--wf-ease-inout);
+}
+.wf-step-node{
+  width: 12px;
+  height: 12px;
+  margin-top: .85rem;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--border-c);
+  transition: background .5s var(--wf-ease-inout), border-color .5s var(--wf-ease-inout), box-shadow .5s var(--wf-ease-inout);
+}
+
+.wf-step-content{
+  border-radius: 16px;
+  padding: 1.1rem 1.4rem;
+  opacity: .35;
+  filter: blur(3px);
+  transform: translateY(18px);
+  background: transparent;
+  box-shadow: none;
+  transition:
+    opacity .7s var(--wf-ease-out),
+    transform .7s var(--wf-ease-out),
+    filter .7s var(--wf-ease-out),
+    background .5s var(--wf-ease-inout),
+    box-shadow .5s var(--wf-ease-inout);
+}
+.wf-step-title{
+  transition: opacity .6s var(--wf-ease-out), transform .6s var(--wf-ease-out);
+}
+.wf-step-desc{
+  transition: opacity .6s var(--wf-ease-out) .12s, transform .6s var(--wf-ease-out) .12s;
+}
+
+.wf-step.is-upcoming .wf-step-content{
+  opacity: .35;
+  filter: blur(3px);
+  transform: translateY(18px);
+}
+
+.wf-step.is-active .wf-step-number{
+  opacity: 1;
+  transform: scale(1.15);
+  color: var(--primary-dark);
+  text-shadow: 0 0 24px var(--wf-glow);
+}
+.wf-step.is-active .wf-step-node{
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 6px rgba(2,132,199,.15), 0 0 18px var(--wf-glow);
+}
+.wf-step.is-active .wf-step-content{
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+  background: #fff;
+  box-shadow: 0 14px 40px -14px rgba(2,132,199,.22), 0 0 0 1px rgba(2,132,199,.08);
+}
+
+.wf-step.is-past .wf-step-number{
+  opacity: .55;
+  transform: scale(.95);
+  color: var(--heading);
+}
+.wf-step.is-past .wf-step-node{
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: none;
+}
+.wf-step.is-past .wf-step-content{
+  opacity: .55;
+  filter: blur(0);
+  transform: translateY(0);
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 991.98px){
+  .wf-rail{ left: 27px; }
+  .wf-step{ grid-template-columns: 56px 1fr; column-gap: 1.1rem; padding: 1.6rem 0; }
+  .wf-step-number{ font-size: 1.3rem; }
+  .wf-step-content{ padding: .9rem 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .workflow-section [data-wf-badge],
+  .workflow-section [data-wf-heading],
+  .workflow-section [data-wf-desc],
+  .workflow-section [data-wf-timeline],
+  .wf-step-content,
+  .wf-step-number,
+  .wf-step-node{
+    transition-duration: .01ms !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .wf-step.is-upcoming .wf-step-content{ opacity: .6; }
 }
 
 .stat-number{
@@ -684,5 +755,34 @@ footer a:hover{
     section{
         padding-top: 3.5rem;
         padding-bottom: 3.5rem;
+    }
+}
+
+/* ============================================================
+     GLOBAL: Scroll-triggered Fade Up
+     Applies a subtle fade+translateY entrance to sections and
+     their immediate child elements with optional staggering.
+     ============================================================ */
+.animate-up {
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+    transition: opacity .6s cubic-bezier(0.16, 1, 0.3, 1),
+                            transform .6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-up.in-view {
+    opacity: 1;
+    transform: none;
+}
+.animate-up.staggered {
+    transition-delay: var(--delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .animate-up,
+    .animate-up.in-view {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
     }
 }

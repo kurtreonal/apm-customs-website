@@ -261,6 +261,52 @@ const style = document.createElement("style");
   loadGoogleTranslate();
 })();
 
+// ==========================================================
+// GLOBAL: Scroll-triggered Fade-Up for sections and their children
+// Adds `animate-up` to sections and immediate children, and
+// reveals with a staggered delay when the section enters view.
+// ==========================================================
+(function () {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion) return; // respect user preference
+
+  const sections = Array.from(document.querySelectorAll("section"));
+  if (!sections.length) return;
+
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const sec = entry.target;
+
+        // reveal section and stagger immediate children
+        sec.classList.add("in-view");
+
+        const children = Array.from(sec.children).filter((c) => c.nodeType === 1);
+        children.forEach((el, i) => {
+          el.classList.add("in-view");
+          el.style.setProperty("--delay", `${i * 90}ms`);
+        });
+
+        obs.unobserve(sec);
+      });
+    },
+    { threshold: 0.16 }
+  );
+
+  // initialize: mark all sections & immediate children as animate-up
+  sections.forEach((sec) => {
+    if (sec.classList.contains("no-animate")) return;
+    sec.classList.add("animate-up");
+    const children = Array.from(sec.children).filter((c) => c.nodeType === 1);
+    children.forEach((el, i) => {
+      el.classList.add("animate-up", "staggered");
+      el.style.setProperty("--delay", `${i * 90}ms`);
+    });
+    io.observe(sec);
+  });
+})();
+
 let isSendmailActive = false;
 
 // ---- Contact form validation (front-end only — static site, no backend) ----
@@ -291,9 +337,6 @@ let isSendmailActive = false;
   }
 
 
-  // Relies on the browser's built-in constraint validation (required,
-  // type="email", the phone pattern, minlength) — no extra validation
-  // library needed for a front-end-only form like this.
   function validateField(field) {
     const valid = field.checkValidity();
     if (valid) {
@@ -305,9 +348,7 @@ let isSendmailActive = false;
   }
 
   fieldsOf(form).forEach(field => {
-    // Once a field has been flagged invalid, re-check it live as the
-    // visitor corrects it, rather than making them submit again to see
-    // whether it's fixed.
+
     field.addEventListener("input", () => {
       if (field.classList.contains("is-invalid")) validateField(field);
     });
@@ -389,6 +430,121 @@ function sendMail(){
 
   return emailjs.send("service_4qsk5kd", "template_tmtb9gb", params);
 }
-  
 
+// ==========================================================
+// WORKFLOW — SCROLL STORYTELLING
+// IntersectionObserver drives all state changes (entrance +
+// active/past/upcoming). A single rAF-throttled scroll listener
+// exists only to drive the progress rail's continuous fill —
+// no other logic runs per scroll frame, so this stays cheap.
+// ==========================================================
+(function () {
+  const section = document.querySelector(".workflow-section");
+  if (!section) return;
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const entranceObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          section.classList.add("wf-in-view");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+  entranceObserver.observe(section);
+
+  const steps = Array.from(section.querySelectorAll("[data-wf-step]"));
+  if (steps.length === 0) return;
+
+  let activeIndex = 0;
+
+  function applyState(index) {
+    activeIndex = index;
+    steps.forEach((step, i) => {
+      step.classList.remove("is-active", "is-past", "is-upcoming");
+      if (i === index) {
+        step.classList.add("is-active");
+      } else if (i < index) {
+        step.classList.add("is-past");
+      } else {
+        step.classList.add("is-upcoming");
+      }
+      const node = step.querySelector("[data-wf-node]");
+      if (node) {
+        if (i === index) node.setAttribute("aria-current", "step");
+        else node.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  steps.forEach((step) => step.classList.add("is-upcoming"));
+
+  const ratios = new Map(steps.map((s) => [s, 0]));
+
+  const stepObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => ratios.set(entry.target, entry.intersectionRatio));
+
+      let bestStep = null;
+      let bestRatio = 0;
+      ratios.forEach((ratio, step) => {
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestStep = step;
+        }
+      });
+
+      if (bestStep) {
+        const idx = steps.indexOf(bestStep);
+        if (idx !== activeIndex) applyState(idx);
+      }
+    },
+    {
+      root: null,
+      rootMargin: "-42% 0px -42% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    }
+  );
+  steps.forEach((step) => stepObserver.observe(step));
+
+  const railFill = section.querySelector("[data-wf-rail-fill]");
+  const stepsWrap = section.querySelector("[data-wf-steps]");
+
+  let ticking = false;
+
+  function updateRail() {
+    ticking = false;
+    if (!railFill || !stepsWrap) return;
+
+    const rect = stepsWrap.getBoundingClientRect();
+    const viewportCenter = window.innerHeight / 2;
+    const total = rect.height;
+    if (total <= 0) return;
+
+    const traveled = viewportCenter - rect.top;
+    const progress = Math.max(0, Math.min(1, traveled / total));
+    railFill.style.height = progress * 100 + "%";
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateRail);
+    }
+  }
+
+  if (!prefersReducedMotion) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    updateRail();
+  } else if (railFill) {
+    railFill.style.height = "100%";
+  }
+})();
 
