@@ -118,7 +118,6 @@ if (img) {
       let observer = null;
       let quietTimer = null;
       let overallTimer = null;
-      let mutationSeen = false;
 
       function finish() {
         if (settled) return;
@@ -130,7 +129,6 @@ if (img) {
       }
 
       observer = new MutationObserver(() => {
-        mutationSeen = true;
         // Every new mutation restarts the quiet window — we only
         // consider translation "done" once nothing has changed for
         // SETTLE_QUIET_MS straight.
@@ -143,12 +141,13 @@ if (img) {
         subtree: true
       });
 
-      // If nothing ever mutates (e.g. Google silently no-ops a reselect
-      // of the language already showing), don't wait the full overall
-      // timeout for no reason — resolve after one quiet window instead.
-      quietTimer = setTimeout(() => {
-        if (!mutationSeen) finish();
-      }, SETTLE_QUIET_MS);
+      // No early "nothing mutated yet" shortcut here on purpose — a first
+      // translation to a given language can involve a network round-trip
+      // before any DOM change starts, and resolving early on silence would
+      // just reintroduce the "marked done before it actually happened" bug
+      // this function exists to prevent. Genuine no-ops (re-clicking the
+      // already-active language) are filtered out before this is ever
+      // called, so the only fallback needed is the absolute cap below.
 
       // Absolute safety net so the UI can never hang indefinitely if
       // Google's widget is blocked or behaves unexpectedly.
@@ -188,14 +187,37 @@ if (img) {
       moveThumb(btn);
     }
 
+    // Small gap between resetting the combo and setting the real target —
+    // gives Google's handler a full tick to process the reset before the
+    // next change lands, rather than the two arriving back-to-back.
+    const RESET_GAP_MS = 80;
+
     async function switchLanguage(lang, btn) {
       busy = true;
       setLoading(true, btn);
       try {
         const combo = await waitForCombo();
+
+        // Start watching for DOM settle BEFORE triggering any change, so
+        // we catch the full churn from both steps below as one window.
+        const settlePromise = waitForTranslationSettle();
+
+        // Force the select through its reset option (value "" — Google's
+        // own "Select Language" placeholder) before setting the real
+        // target. Without this, requesting a language shortly after a
+        // revert-to-English can get silently swallowed: Google's internal
+        // state hasn't fully caught up with the previous change yet, so it
+        // treats the new request as a no-op instead of a genuine switch.
+        // Routing through the reset option first guarantees it sees a real
+        // state change either way.
+        combo.value = "";
+        combo.dispatchEvent(new Event("change"));
+        await new Promise(resolve => setTimeout(resolve, RESET_GAP_MS));
+
         combo.value = lang;
         combo.dispatchEvent(new Event("change"));
-        await waitForTranslationSettle();
+
+        await settlePromise;
       } catch (err) {
         // Translation didn't come through in time — the switcher still
         // settles on the requested button so the UI never gets stuck, but
@@ -237,4 +259,83 @@ const style = document.createElement("style");
   document.head.appendChild(style);
 
   loadGoogleTranslate();
+})();
+
+// ---- Contact form validation (front-end only — static site, no backend) ----
+(function () {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+
+  const successBox = document.getElementById("contact-success");
+
+  function fieldsOf(formEl) {
+    return Array.from(formEl.querySelectorAll("input, select, textarea"));
+  }
+
+  function showError(field) {
+    field.classList.add("is-invalid");
+    const feedback = field.nextElementSibling;
+    if (feedback && feedback.classList.contains("invalid-feedback-custom")) {
+      feedback.classList.add("show");
+    }
+  }
+
+  function clearError(field) {
+    field.classList.remove("is-invalid");
+    const feedback = field.nextElementSibling;
+    if (feedback && feedback.classList.contains("invalid-feedback-custom")) {
+      feedback.classList.remove("show");
+    }
+  }
+
+  // Relies on the browser's built-in constraint validation (required,
+  // type="email", the phone pattern, minlength) — no extra validation
+  // library needed for a front-end-only form like this.
+  function validateField(field) {
+    const valid = field.checkValidity();
+    if (valid) {
+      clearError(field);
+    } else {
+      showError(field);
+    }
+    return valid;
+  }
+
+  fieldsOf(form).forEach(field => {
+    // Once a field has been flagged invalid, re-check it live as the
+    // visitor corrects it, rather than making them submit again to see
+    // whether it's fixed.
+    field.addEventListener("input", () => {
+      if (field.classList.contains("is-invalid")) validateField(field);
+    });
+    field.addEventListener("change", () => {
+      if (field.classList.contains("is-invalid")) validateField(field);
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (successBox) successBox.hidden = true;
+
+    const fields = fieldsOf(form);
+    // Intentionally validates every field (no early-exit) so all errors
+    // are visible at once instead of one-at-a-time across repeat submits.
+    const allValid = fields
+      .map(field => validateField(field))
+      .every(Boolean);
+
+    if (!allValid) {
+      const firstInvalid = form.querySelector(".is-invalid");
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    // This is a static site with no backend (per the project brief) —
+    // there's nothing to actually send the request to yet. Once a real
+    // endpoint or mailto: handoff exists, that call goes here. For now,
+    // confirm receipt to the visitor and reset the form.
+    if (successBox) successBox.hidden = false;
+    form.reset();
+    fields.forEach(clearError);
+  });
 })();

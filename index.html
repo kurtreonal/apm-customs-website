@@ -304,52 +304,48 @@
     </div>
     </section>
 
-    <!--FAQ + CONTACT-->
-    <section id="faq" class="bg-white">
+    <!--CONTACT INFO + FORM-->
+    <section id="contact-info" class="bg-white">
     <div class="container">
         <div class="row g-5">
         <div class="col-lg-6">
-            <span class="badge-pill mb-3">FAQ</span>
-            <h2 class="mb-4">Common questions</h2>
-            <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                    How long does customs clearance take?
-                </button>
-                </h2>
-                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">Most entries clear within 24–48 hours once complete documentation is received, assuming no inspection hold is issued by CBP.</div>
+            <span class="badge-pill mb-3">CONTACT</span>
+            <h2 class="mb-3">Contact Us</h2>
+            <p class="mb-4">Have questions or need assistance? Get in touch with our team using the contact information below. We're here to help and look forward to hearing from you.</p>
+
+            <!-- Placeholder contact details — replace with APM-verified info
+                 before launch (per client instruction, not sourced from the
+                 internal company profile document). -->
+            <div class="contact-info-list">
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-geo-alt"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Office Address</h6>
+                <p class="mb-0">Lot 7 F 2&3 Rodriguez Compound, Aurenina Village, Brgy. San Dionisio, Parañaque City 1700, Philippines</p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                    What documents do I need to provide?
-                </button>
-                </h2>
-                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">A commercial invoice, packing list, bill of lading, and any product-specific permits or certificates required for your goods.</div>
+
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-telephone"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Phone Number</h6>
+                <p class="mb-0"><a href="tel:+630000000000" class="contact-link">(+632) 8682 6845 / 8696 7798</a></p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                    Do you handle both imports and exports?
-                </button>
-                </h2>
-                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">Yes. Our brokers manage both import entries and export documentation, including AES filing where required.</div>
+
+            <div class="check-item">
+                <div class="icon-circle-sm"><i class="bi bi-envelope"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Email Address</h6>
+                <p class="mb-0"><a href="mailto:contact@apmcustomsbrokerage.example" class="contact-link">anna@extreme-sea-air.com.ph</a></p>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                    Can you help lower our duty costs?
-                </button>
-                </h2>
-                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">We review your classifications for free trade agreement eligibility and duty drawback opportunities as part of every engagement.</div>
+
+            <div class="check-item mb-0">
+                <div class="icon-circle-sm"><i class="bi bi-clock"></i></div>
+                <div>
+                <h6 class="fw-heading mb-1">Business Hours</h6>
+                <p class="mb-0">Monday – Friday, 8:00 AM – 5:00 PM</p>
                 </div>
             </div>
             </div>
@@ -357,20 +353,52 @@
 
         <div class="col-lg-6" id="contact">
             <div class="contact-card">
-            <h4 class="fw-heading mb-4">Request a free quote</h4>
-            <form>
+            <h4 class="fw-heading mb-2">Request a Consultation</h4>
+            <p class="mb-4">Tell us about your shipment or documentation needs and a licensed broker will get back to you.</p>
+
+            <div id="contact-success" class="contact-success mb-4" role="status" hidden>
+                Thanks — your request has been received. We'll be in touch shortly.
+            </div>
+
+            <form id="contact-form" novalidate>
                 <div class="mb-3">
-                <input type="text" class="form-control-custom" placeholder="Full name" required>
+                <label for="cf-name" class="form-label-custom">Full name</label>
+                <input type="text" id="cf-name" name="name" class="form-control-custom" placeholder="Juan Dela Cruz" required minlength="2" autocomplete="name">
+                <div class="invalid-feedback-custom">Please enter your full name.</div>
                 </div>
+
                 <div class="mb-3">
-                <input type="email" class="form-control-custom" placeholder="Work email" required>
+                <label for="cf-email" class="form-label-custom">Email address</label>
+                <input type="email" id="cf-email" name="email" class="form-control-custom" placeholder="you@company.com" required autocomplete="email">
+                <div class="invalid-feedback-custom">Please enter a valid email address.</div>
                 </div>
+
                 <div class="mb-3">
-                <input type="text" class="form-control-custom" placeholder="Company name">
+                <label for="cf-phone" class="form-label-custom">Phone number</label>
+                <input type="tel" id="cf-phone" name="phone" class="form-control-custom" placeholder="09XX XXX XXXX" required pattern="^[0-9+\-\s()]{7,20}$" inputmode="tel" autocomplete="tel">
+                <div class="invalid-feedback-custom">Please enter a valid phone number.</div>
                 </div>
+
+                <div class="mb-3">
+                <label for="cf-service" class="form-label-custom">Service needed</label>
+                <select id="cf-service" name="service" class="form-control-custom" required>
+                    <option value="" selected disabled>Select a service</option>
+                    <option value="Customs clearance and brokerage assistance">Customs clearance and brokerage assistance</option>
+                    <option value="Import and export documentation support">Import and export documentation support</option>
+                    <option value="Tariff classification and customs valuation assistance">Tariff classification and customs valuation assistance</option>
+                    <option value="Shipment and freight coordination">Shipment and freight coordination</option>
+                    <option value="Trucking or delivery coordination">Trucking or delivery coordination</option>
+                    <option value="Regulatory and compliance consultation">Regulatory and compliance consultation</option>
+                </select>
+                <div class="invalid-feedback-custom">Please select the service you need.</div>
+                </div>
+
                 <div class="mb-4">
-                <textarea class="form-control-custom" rows="4" placeholder="Tell us about your shipment"></textarea>
+                <label for="cf-message" class="form-label-custom">Message</label>
+                <textarea id="cf-message" name="message" class="form-control-custom" rows="4" placeholder="Tell us about your shipment or documentation needs" required minlength="10"></textarea>
+                <div class="invalid-feedback-custom">Please tell us a bit about your shipment or documentation needs.</div>
                 </div>
+
                 <button type="submit" class="btn-primary-custom w-100">Send Request</button>
             </form>
             </div>
@@ -402,7 +430,7 @@
         <div class="col-6 col-lg-2">
             <h5 class="mb-3">Resources</h5>
             <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact-info">Contact</a></li>
             <li><a href="#">Trade Updates</a></li>
             <li><a href="#">Duty Calculator</a></li>
             <li><a href="#">HTS Lookup</a></li>
@@ -411,9 +439,9 @@
         <div class="col-lg-4">
             <h5 class="mb-3">Contact</h5>
             <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><i class="bi bi-geo-alt me-2"></i>400 Harbor Way, Long Beach, CA</li>
-            <li><i class="bi bi-telephone me-2"></i>(800) 555-0143</li>
-            <li><i class="bi bi-envelope me-2"></i>hello@clearport.example</li>
+            <li><i class="bi bi-geo-alt me-2"></i>Lot 7 F 2&3 Rodriguez Compound, Aurenina Village, Brgy. San Dionisio, Parañaque City 1700, Philippines</li>
+            <li><i class="bi bi-telephone me-2"></i>(+632) 8682 6845 / 8696 7798</li>
+            <li><i class="bi bi-envelope me-2"></i>anna@extreme-sea-air.com.ph</li>
             </ul>
         </div>
         </div>
