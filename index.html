@@ -387,18 +387,19 @@
             <h4 class="fw-heading mb-4">Request a Free Quote</h4>
             <form>
                 <div class="mb-3">
-                <input type="text" class="form-control-custom" placeholder="Full name" required>
+        
+                <input type="text" class="form-control-custom" id="name" placeholder="Full name" required>
                 </div>
                 <div class="mb-3">
-                <input type="email" class="form-control-custom" placeholder="Work email" required>
+                <input type="email" class="form-control-custom" id="email" placeholder="Work email" required>
                 </div>
                 <div class="mb-3">
-                <input type="text" class="form-control-custom" placeholder="Company name">
+                <input type="text" class="form-control-custom" id="company" placeholder="Company name">
                 </div>
                 <div class="mb-4">
-                <textarea class="form-control-custom" rows="4" placeholder="Tell us about your shipment"></textarea>
+                <textarea class="form-control-custom" id="message" rows="4" placeholder="Tell us about your shipment"></textarea>
                 </div>
-                <button type="submit" class="btn-primary-custom w-100">Send Request</button>
+                <button id="send-request-btn" type="button" class="btn-primary-custom w-100" onclick="sendmail()">Send Request</button>
             </form>
             </div>
         </div>
@@ -459,6 +460,18 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<!-- Translation JS -->
 <script src="assets/js/main.js"></script>
+<!-- EmailJS -->
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "KZbnDuylZJVDExKAN",
+      });
+   })();
+</script>
 </body>
 </html>

@@ -144,3 +144,69 @@ const style = document.createElement("style");
 
   loadGoogleTranslate();
 })();
+
+function getCurrentTimestamp() {
+  const now = new Date();
+  return now.toLocaleString([], {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+}
+
+// Send email using EmailJS
+let isSendmailActive = false;
+
+function sendmail() {
+  if (isSendmailActive) {
+    return;
+  }
+
+  const button = document.getElementById("send-request-btn");
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const company = document.getElementById("company").value.trim();
+  const message = document.getElementById("message").value.trim();
+
+  if (!name || !email) {
+    alert("Please enter your name and email before sending.");
+    return;
+  }
+
+  isSendmailActive = true;
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Sending...";
+  }
+
+  const params = {
+    name,
+    email,
+    company,
+    message,
+    sentAt: getCurrentTimestamp(),
+    reply_to: email,
+    from_name: name,
+  };
+
+  emailjs.send("service_4qsk5kd", "template_tmtb9gb", params)
+    .then(function () {
+      if (button) {
+        button.textContent = "Request Sent";
+      }
+      alert("Request sent successfully! We'll get back to you soon.");
+    })
+    .catch(function (err) {
+      console.error("Failed to send email:", err);
+      alert("Failed to send request. Please try again later.");
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Send Request";
+      }
+      isSendmailActive = false;
+    });
+}
