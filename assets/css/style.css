@@ -425,6 +425,9 @@ h2 {
     font-size: 1.1rem;
     flex-shrink: 0;
 }
+/* Font Awesome icons inherit color and font-size directly from their
+   container (.icon-square, .icon-circle-sm, .brand-mark, footer li, etc.)
+   the same way Bootstrap Icons did — no extra sizing CSS required. */
 .icon-circle-fill{
     width: 48px;
     height: 48px;
@@ -662,6 +665,19 @@ section{
 }
 .check-item .icon-circle-sm{
     background: var(--icon-bg);
+}
+
+/* map */
+.map-container {
+  width: 100%;
+  /* Adjust this ratio (e.g., 16/9, 21/9, or 4/3) to change the map's shape */
+  aspect-ratio: 16 / 9;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* CTA */
