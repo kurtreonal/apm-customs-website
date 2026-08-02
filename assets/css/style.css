@@ -43,6 +43,7 @@ h2 {
     padding: .75rem 1.75rem;
     font-weight: 600;
     transition: .2s ease;
+    text-decoration: none;
 }
 .btn-primary-custom:hover{
     background: var(--primary-dark);
@@ -56,6 +57,7 @@ h2 {
     font-weight: 600;
     background: transparent;
     transition: .2s ease;
+    text-decoration: none;
 }
 .btn-outline-custom:hover{
     background: rgba(255,255,255,.15);
@@ -87,13 +89,19 @@ h2 {
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    background:var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     font-size: 1.2rem;
     flex-shrink: 0;
+}
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 50px;
 }
 .brand-text{
     display: flex;
@@ -118,6 +126,36 @@ h2 {
     white-space: nowrap;
 }
 
+/* Mobile menu panel — taken OUT of normal flow (position: absolute,
+   anchored to the sticky <nav>) so opening/closing it can never push,
+   stretch, or reposition the navbar or the page content beneath it.
+   Toggled purely with max-height/opacity/transform — no height:auto,
+   no display add/remove, no inline styles from JS. */
+.mobile-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+    border-bottom: 1px solid var(--border-c);
+
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: max-height .3s ease, opacity .25s ease, transform .25s ease, visibility 0s linear .3s;
+}
+.mobile-menu.is-open{
+    max-height: 80vh;
+    overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: max-height .3s ease, opacity .25s ease, transform .25s ease, visibility 0s linear 0s;
+}
+
 /* Nav links (fully custom — deliberately NOT reusing Bootstrap's
    .navbar-nav so there is zero specificity/load-order fight) */
 .nav-links{
@@ -125,8 +163,8 @@ h2 {
     flex-direction: column;
     align-items: center;
     list-style: none;
-    margin: 1.5rem 0 0 0;
-    padding: 0;
+    margin: 0;
+    padding: 1.25rem 0;
     gap: 1rem;
 }
 .nav-links .nav-link-custom{
@@ -142,14 +180,27 @@ h2 {
     color: var(--primary);
 }
 @media (min-width: 992px){
-    #mainNav{
+    /* Desktop: no overlay panel at all — back to a normal inline
+       flex item, always visible, no transition to fight with. */
+    .mobile-menu{
+        position: static;
         flex: 1 1 auto;
         display: flex;
         justify-content: center;
+        max-height: none;
+        overflow: visible;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background: transparent;
+        box-shadow: none;
+        border-bottom: none;
+        transition: none;
     }
     .nav-links{
         flex-direction: row;
         margin: 0;
+        padding: 0;
         gap: 2rem;
     }
 }

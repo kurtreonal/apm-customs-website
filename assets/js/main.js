@@ -1,53 +1,3 @@
-const img = document.getElementById("face");
-const output = document.getElementById("ascii");
-
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=!?";
-
-if (img) {
-    img.onload = () => {
-
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        const width = 120;
-        const height = Math.floor(img.height * (width / img.width) * 0.5);
-
-        canvas.width = width;
-        canvas.height = height;
-
-        ctx.drawImage(img,0,0,width,height);
-
-        const pixels = ctx.getImageData(0,0,width,height).data;
-
-        let text = "";
-
-        for(let y=0;y<height;y++){
-
-            for(let x=0;x<width;x++){
-
-                const i=(y*width+x)*4;
-
-                const r=pixels[i];
-                const g=pixels[i+1];
-                const b=pixels[i+2];
-
-                const brightness=(r+g+b)/3;
-
-                if(brightness<220){
-                    text += chars[Math.floor(Math.random()*chars.length)];
-                }else{
-                    text += " ";
-                }
-            }
-
-            text+="\n";
-        }
-
-        output.textContent=text;
-    };
-}
-
-// ---- Manual Language Switcher (button-controlled, Google Translate engine) ----
 (function () {
   const COMBO_READY_TIMEOUT_MS = 5000;   // waiting for .goog-te-combo to populate
   const COMBO_POLL_INTERVAL_MS = 100;
@@ -60,9 +10,6 @@ if (img) {
     document.body.appendChild(script);
   }
 
-  // googleTranslateElementInit now ONLY sets up the translate engine.
-  // It no longer gates the button UI — if this callback is late, blocked,
-  // or never fires, the switcher still works; translation just waits/retries.
   window.googleTranslateElementInit = function () {
     new google.translate.TranslateElement(
       { pageLanguage: "en", autoDisplay: false },
@@ -70,11 +17,6 @@ if (img) {
     );
   };
 
-  // Resolves with the populated <select class="goog-te-combo"> once Google
-  // Translate has finished loading and filling in its <option> list.
-  // Google inserts the empty <select> before it fills in the options, so we
-  // wait for options.length > 1 too — otherwise a set value has nothing to
-  // match and silently does nothing.
   function waitForCombo() {
     return new Promise((resolve, reject) => {
       let attempts = 0;
@@ -94,22 +36,6 @@ if (img) {
     });
   }
 
-  // Resolves once the translation has actually finished being applied to
-  // the page content — not just "requested".
-  //
-  // The previous version watched for the "translated-ltr"/"translated-rtl"
-  // class on <html>, but Google only toggles that class on the EN<->non-EN
-  // boundary. Switching between two non-English languages (e.g. CN -> JA)
-  // never touches it — the class is already set and stays set — so that
-  // check could resolve immediately on a same-class transition, even
-  // though the actual text swap for the *new* language hadn't happened
-  // yet. Rapid switching exposed this: the UI would settle on the new
-  // button before the page had actually re-translated.
-  //
-  // Instead we watch the real DOM churn Google Translate produces (text
-  // nodes being replaced) and wait for it to go quiet for SETTLE_QUIET_MS.
-  // Any burst of mutations pushes the "done" point further out, so we only
-  // resolve once the page has genuinely stopped changing.
   const SETTLE_QUIET_MS = 400;
 
   function waitForTranslationSettle() {
@@ -129,9 +55,7 @@ if (img) {
       }
 
       observer = new MutationObserver(() => {
-        // Every new mutation restarts the quiet window — we only
-        // consider translation "done" once nothing has changed for
-        // SETTLE_QUIET_MS straight.
+
         if (quietTimer) clearTimeout(quietTimer);
         quietTimer = setTimeout(finish, SETTLE_QUIET_MS);
       });
@@ -141,16 +65,6 @@ if (img) {
         subtree: true
       });
 
-      // No early "nothing mutated yet" shortcut here on purpose — a first
-      // translation to a given language can involve a network round-trip
-      // before any DOM change starts, and resolving early on silence would
-      // just reintroduce the "marked done before it actually happened" bug
-      // this function exists to prevent. Genuine no-ops (re-clicking the
-      // already-active language) are filtered out before this is ever
-      // called, so the only fallback needed is the absolute cap below.
-
-      // Absolute safety net so the UI can never hang indefinitely if
-      // Google's widget is blocked or behaves unexpectedly.
       overallTimer = setTimeout(finish, APPLY_TIMEOUT_MS);
     });
   }
@@ -175,8 +89,6 @@ if (img) {
       if (statusEl) statusEl.textContent = isLoading ? "Translating page…" : "";
     }
 
-    // Only now — after translation has started/applied (or definitively
-    // failed) — do we move the thumb and mark the new button active.
     function activate(btn) {
       buttons.forEach(b => {
         b.classList.remove("active");
@@ -187,9 +99,6 @@ if (img) {
       moveThumb(btn);
     }
 
-    // Small gap between resetting the combo and setting the real target —
-    // gives Google's handler a full tick to process the reset before the
-    // next change lands, rather than the two arriving back-to-back.
     const RESET_GAP_MS = 80;
 
     async function switchLanguage(lang, btn) {
@@ -198,18 +107,8 @@ if (img) {
       try {
         const combo = await waitForCombo();
 
-        // Start watching for DOM settle BEFORE triggering any change, so
-        // we catch the full churn from both steps below as one window.
         const settlePromise = waitForTranslationSettle();
 
-        // Force the select through its reset option (value "" — Google's
-        // own "Select Language" placeholder) before setting the real
-        // target. Without this, requesting a language shortly after a
-        // revert-to-English can get silently swallowed: Google's internal
-        // state hasn't fully caught up with the previous change yet, so it
-        // treats the new request as a no-op instead of a genuine switch.
-        // Routing through the reset option first guarantees it sees a real
-        // state change either way.
         combo.value = "";
         combo.dispatchEvent(new Event("change"));
         await new Promise(resolve => setTimeout(resolve, RESET_GAP_MS));
@@ -219,9 +118,7 @@ if (img) {
 
         await settlePromise;
       } catch (err) {
-        // Translation didn't come through in time — the switcher still
-        // settles on the requested button so the UI never gets stuck, but
-        // this is logged so a broken translate integration is noticeable.
+        //Translation didn't come through in time — the switcher still
         console.error("Google Translate never became ready — translation unavailable, but the UI stays responsive.", err);
       } finally {
         setLoading(false, btn);
@@ -261,11 +158,7 @@ const style = document.createElement("style");
   loadGoogleTranslate();
 })();
 
-// ==========================================================
-// GLOBAL: Scroll-triggered Fade-Up for sections and their children
-// Adds `animate-up` to sections and immediate children, and
-// reveals with a staggered delay when the section enters view.
-// ==========================================================
+// scroll-triggered Fade-Up for sections and their children
 (function () {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (prefersReducedMotion) return; // respect user preference
@@ -279,7 +172,7 @@ const style = document.createElement("style");
         if (!entry.isIntersecting) return;
         const sec = entry.target;
 
-        // reveal section and stagger immediate children
+        //reveal section and stagger immediate children
         sec.classList.add("in-view");
 
         const children = Array.from(sec.children).filter((c) => c.nodeType === 1);
@@ -294,7 +187,7 @@ const style = document.createElement("style");
     { threshold: 0.16 }
   );
 
-  // initialize: mark all sections & immediate children as animate-up
+  //initialize: mark all sections & immediate children as animate-up
   sections.forEach((sec) => {
     if (sec.classList.contains("no-animate")) return;
     sec.classList.add("animate-up");
@@ -309,7 +202,7 @@ const style = document.createElement("style");
 
 let isSendmailActive = false;
 
-// ---- Contact form validation (front-end only — static site, no backend) ----
+//contact form validation
 (function () {
   const form = document.getElementById("contact-form");
   if (!form) return;
@@ -362,8 +255,7 @@ let isSendmailActive = false;
     if (successBox) successBox.hidden = true;
 
     const fields = fieldsOf(form);
-    // Intentionally validates every field (no early-exit) so all errors
-    // are visible at once instead of one-at-a-time across repeat submits.
+    //validates every field (no early-exit) so all errors are shown at once, then checks if all are valid
     const allValid = fields
       .map(field => validateField(field))
       .every(Boolean);
@@ -384,8 +276,8 @@ let isSendmailActive = false;
       return;
     }
 
-    // This is a static site with no backend (per the project brief) —
-    // the EmailJS send happens here instead of a server endpoint.
+    //This is a static site with no backend (per the project brief)
+    //EmailJS send happens here instead of a server endpoint.
     const submitButton = form.querySelector('button[type="submit"]');
     if (submitButton) {
       submitButton.disabled = true;
@@ -431,13 +323,7 @@ function sendMail(){
   return emailjs.send("service_4qsk5kd", "template_tmtb9gb", params);
 }
 
-// ==========================================================
-// WORKFLOW — SCROLL STORYTELLING
-// IntersectionObserver drives all state changes (entrance +
-// active/past/upcoming). A single rAF-throttled scroll listener
-// exists only to drive the progress rail's continuous fill —
-// no other logic runs per scroll frame, so this stays cheap.
-// ==========================================================
+// WORKFLOW — SCROLL
 (function () {
   const section = document.querySelector(".workflow-section");
   if (!section) return;
@@ -546,5 +432,45 @@ function sendMail(){
   } else if (railFill) {
     railFill.style.height = "100%";
   }
+})();
+
+/*MOBILE NAV TOGGLE */
+(function () {
+  const toggleBtn = document.getElementById("navToggleBtn");
+  const mobileMenu = document.getElementById("mainNav");
+  if (!toggleBtn || !mobileMenu) return;
+
+  const closeMenu = () => {
+    mobileMenu.classList.remove("is-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+  };
+
+  const openMenu = () => {
+    mobileMenu.classList.add("is-open");
+    toggleBtn.setAttribute("aria-expanded", "true");
+  };
+
+  toggleBtn.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.contains("is-open");
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  // Close after picking a link (mobile UX expectation).
+  mobileMenu.addEventListener("click", (e) => {
+    if (e.target.closest(".nav-link-custom")) closeMenu();
+  });
+
+  // Close if the menu is left open and the viewport grows back to desktop,
+  // where the panel becomes a static, always-visible element again.
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 992) closeMenu();
+  });
+
+  // Close on outside click.
+  document.addEventListener("click", (e) => {
+    if (!mobileMenu.classList.contains("is-open")) return;
+    if (mobileMenu.contains(e.target) || toggleBtn.contains(e.target)) return;
+    closeMenu();
+  });
 })();
 
