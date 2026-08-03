@@ -3,13 +3,16 @@
 /* Safety net: a stray unwrapped Bootstrap .row (negative gutter
    margins with no .container to offset them) is the classic cause
    of a few extra pixels of horizontal scroll. This keeps the page
-   from ever scrolling sideways even if that happens again. */
+   from ever scrolling sideways even if that happens again.
+   IMPORTANT: this lives on <html> ONLY. Putting `overflow-x:hidden`
+   on <body> as well forces it to become its own scroll container
+   (per the CSS overflow spec, a non-visible value on one axis makes
+   the other axis compute to `auto`) — which is exactly what breaks
+   `position: sticky` navbars: the nav ends up stuck to <body>'s box
+   instead of the real viewport scroll box, so it desyncs and scrolls
+   out of view. Never repeat that on <body>. */
 html{
     overflow-x: hidden;
-}
-body{
-    overflow-x: hidden;
-    max-width: 100vw;
 }
 img, svg, video, canvas{
     max-width: 100%;
