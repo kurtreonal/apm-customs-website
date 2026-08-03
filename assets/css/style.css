@@ -299,7 +299,7 @@ h2 {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 180px;
+    width: 100%;
     flex: 0 0 180px;
     text-align: center;
 }
@@ -329,7 +329,11 @@ h2 {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
 }
-
+@media (max-width: 1440px){
+    .nav-cta {
+        padding: .45rem .8rem; font-size: .85rem; width: 210px;
+    }
+}
 /* ---- ≤1399px: small laptop tier (covers the 992–1399 bracket,
    i.e. wherever Bootstrap's .container is 960px or 1140px — see
    explanation for why this can't stop at 1040px alone) ---- */
@@ -343,7 +347,7 @@ h2 {
     .nav-links .nav-link-custom{ font-size: .85rem; padding: .4rem .5rem; }
     #lang-switcher{ width: 150px; }
     .lang-opt{ font-size: .68rem; padding: .3rem .35rem; }
-    .nav-cta{ padding: .45rem .8rem; font-size: .85rem; }
+    .nav-cta{ padding: .45rem .8rem; font-size: .85rem; width: 210px;}
     .navbar-actions{ gap: .6rem; }
 }
 
