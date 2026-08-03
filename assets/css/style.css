@@ -381,8 +381,16 @@ h2 {
     .lang-opt{ font-size: .56rem; padding: .2rem .1rem; }
     .nav-cta-full{ display: none; }
     .nav-cta-short{ display: inline; }
-    .nav-cta{ padding: .4rem .6rem; font-size: .68rem; }
-    .navbar-custom .navbar-toggler{ padding: .2rem .35rem; font-size: .85rem; }
+    .nav-cta{
+        padding: .4rem .6rem;
+        font-size: .68rem;
+        width: 30px;
+        flex-basis: 60px;
+    }
+    .navbar-custom .navbar-toggler{
+        padding: .2rem .35rem;
+        font-size: .85rem;
+    }
 }
 
 @media (max-width: 360px){
@@ -391,6 +399,12 @@ h2 {
         flex-basis: 60px;
         padding: .35rem .5rem;
         font-size: .64rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .brand-text {
+        display: none;
     }
 }
 
