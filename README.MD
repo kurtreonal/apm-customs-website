@@ -15,12 +15,7 @@
 - [Features](#features)
 - [Demo / Screenshots](#demo--screenshots)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Testing](#testing)
-- [Roadmap](#roadmap)
 - [License](#license)
 - [Contact / Support](#contact--support)
 - [Acknowledgments](#acknowledgments)
@@ -58,8 +53,6 @@ This project is a **static, responsive corporate website** built for **APM Custo
 
 ## Demo / Screenshots
 
-| Section |
-|---|
 ![Image Description](assets/images/1.png)
 ![Image Description](assets/images/2.png)
 ![Image Description](assets/images/3.png)
@@ -76,7 +69,6 @@ This is a static site with **no build step and no backend server** — it can be
 ### Prerequisites
 
 - A modern web browser (Chrome, Firefox, Edge, Safari)
-- [Optional] [Node.js](https://nodejs.org/) or Python, if you want to run a local development server
 - An [EmailJS](https://www.emailjs.com/) account if you intend to modify or redeploy the contact form
 
 ### Steps
