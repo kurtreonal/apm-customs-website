@@ -1,0 +1,126 @@
+APM CUSTOMS BROKERAGE — STATIC CORPORATE WEBSITE
+CONTENT & IMAGE SOURCE LIST
+--------------------------------------------------------------------
+Prepared for: Nexii Tech Solutions Inc. — OJT Project Brief v1.1
+Project: APM Customs Brokerage — Responsive Static Corporate Website
+Document purpose: Full list of external assets, libraries, and content
+sources used in index.html / style.css / main.js, per Section 10 of
+the Project Brief ("Content and Branding Rules") and the required
+documentation/content-source-list.txt deliverable.
+
+1. COMPANY CONTENT
+--------------------------------------------------------------------
+Source: UPDATED-APM-COMPANY-PROFILE.pdf (supplied by APM Customs
+Brokerage / supervisor — Annabella P. Maniego, General Manager;
+Claire F. Capistrano, Business Development Manager)
+
+Used for:
+- Company "About Us" narrative (About APM Customs Brokerage section)
+- Establishment date (February 24, 2011)
+- Core Values ("Service with Integrity, Professionalism,
+  Transparency and Respect") — split into 4 value cards
+- Core Services list (Tariff & Customs Consultancy, Customs
+  Clearance in All Ports of Entry, Door to Door Services, Trucking
+  and Hauling, Project Cargo Handling, Inbound & Outbound Cargo
+  Handling)
+- Domestic/International destination list
+- Client count reference
+- Mission statement ("To deliver reliable, compliant, and efficient
+  customs brokerage solutions.") — paraphrased from the
+  company profile
+
+2. ORIGINAL / WRITTEN-FOR-SITE COPY
+--------------------------------------------------------------------
+Source: Written directly for this project (OJT intern), NOT copied
+from the reference site (extremesea-air.com.ph) or any third party.
+
+Used for:
+- Hero headline, badge text, and CTA copy
+- "Why Choose APM" differentiator descriptions
+- 5-step workflow / process copy (Inquiry, Document Review, Customs
+  Filing, Clearance Processing, Delivery & Completion)
+- CTA section copy
+- Meta description / Open Graph description tags
+- Contact section intro copy and form field labels
+
+3. LOGO / BRAND IMAGE
+--------------------------------------------------------------------
+File: assets/images/logo.jpg
+Source: APM Customs Brokerage official logo, as shown on the cover
+page of UPDATED-APM-COMPANY-PROFILE.pdf (supplied by supervisor).
+Used for: navbar brand mark, footer brand mark, favicon, and Open
+Graph image tag.
+Status: Approved company asset.
+
+4. DECORATIVE / BACKGROUND IMAGERY
+--------------------------------------------------------------------
+Source: Placeholder decorative image embedded during development.
+Status: Approved by APM supervisor.
+
+5. EMBEDDED MAP
+--------------------------------------------------------------------
+Element: <iframe> Google Maps embed (Contact section)
+Source: Google Maps Embed API (maps.google.com), public embed
+generated for "APM Customs Brokerage" business listing.
+License/Terms: Google Maps Platform Terms of Service (embed usage is
+free and does not require an API key for basic iframe embeds).
+Status: Approved for use — no proprietary content reproduced.
+
+6. SOCIAL LINKS
+--------------------------------------------------------------------
+- Facebook: https://www.facebook.com/profile.php?id=100063709009472
+  Source: APM Customs Brokerage official Facebook page (link
+  supplied/confirmed by supervisor).
+
+7. THIRD-PARTY LIBRARIES / FRAMEWORKS (CDN)
+--------------------------------------------------------------------
+- Bootstrap 5.3.3 (CSS + bundled JS)
+  https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/
+  License: MIT License
+  Used for: grid system, base component styling, responsive utilities
+
+- Font Awesome 6.7.2
+  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/
+  License: Font Awesome Free License (icons: CC BY 4.0; fonts: SIL
+  OFL 1.1; code: MIT)
+  Used for: phone/email/location/clock/checkmark/social icons
+
+- Google Fonts — "Inter" (variable font, weights 100–900)
+  https://fonts.googleapis.com/css2?family=Inter
+  License: SIL Open Font License 1.1
+  Used for: site-wide typography (headings and body text)
+
+- EmailJS Browser SDK v4
+  https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js
+  License: MIT License
+  Used for: client-side inquiry form submission (service ID
+  "service_4qsk5kd", template ID "template_tmtb9gb")
+  Note: No backend/server exists for this static site per the
+  project brief; EmailJS handles form delivery entirely client-side.
+
+- Google Translate Website Widget
+  https://translate.google.com/translate_a/element.js
+  Source: Google Translate Element API (free, publicly available)
+  Used for: EN / CN (Simplified Chinese) / JP language switcher in
+  the navbar
+
+8. FONTS/ICONS
+--------------------------------------------------------------------
+All icon and font assets above are loaded via public CDN links (no
+local files bundled) and are used strictly under their respective
+free/open licenses. No paid or restricted-license assets are used
+anywhere on the site.
+
+9. ITEMS REQUIRING SUPERVISOR SIGN-OFF BEFORE DEPLOYMENT
+--------------------------------------------------------------------
+- Confirm final Office Address / Phone / Email are correct and
+- APM-approved (currently sourced from company profile PDF, but 
+  flagged in code as needing final verification)
+- Replace decorative "Why Choose APM" background image with a
+  licensed stock photo or APM-owned photograph
+- Confirm Facebook link is current and correct
+- Confirm business hours (Monday–Friday, 8:00 AM–5:00 PM) are
+  accurate
+- Confirm service list / destination list matches current APM
+  offerings (some items, e.g., "Trucking or delivery coordination,
+  if offered," are conditional per the brief)
