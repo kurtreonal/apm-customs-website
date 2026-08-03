@@ -761,7 +761,6 @@ section{
   width: 100%;
   /* Adjust this ratio (e.g., 16/9, 21/9, or 4/3) to change the map's shape */
   aspect-ratio: 16 / 9;
-  margin-top: 5%;
 }
 
 .map-container iframe {
