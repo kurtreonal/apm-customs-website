@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+/* Safety net: a stray unwrapped Bootstrap .row (negative gutter
+   margins with no .container to offset them) is the classic cause
+   of a few extra pixels of horizontal scroll. This keeps the page
+   from ever scrolling sideways even if that happens again. */
+html{
+    overflow-x: hidden;
+}
+body{
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+img, svg, video, canvas{
+    max-width: 100%;
+    height: auto;
+}
+
 :root{
     --primary:#0284C7;
     --primary-dark:#0369A1;
@@ -742,6 +758,7 @@ section{
   width: 100%;
   /* Adjust this ratio (e.g., 16/9, 21/9, or 4/3) to change the map's shape */
   aspect-ratio: 16 / 9;
+  margin-top: 5%;
 }
 
 .map-container iframe {
