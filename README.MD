@@ -100,7 +100,7 @@ This is a static site with **no build step and no backend server** — it can be
 
 ## License
 
-This project is licensed under the **[Insert License, e.g. MIT License]**. See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the **[MIT License]**. See the [LICENSE](./LICENSE) file for details.
 
 > Note: Third-party libraries used in this project (Bootstrap, Font Awesome, EmailJS SDK) retain their own licenses (MIT, Font Awesome Free License). See `documentation/content-source-list.txt` for full attribution.
 
