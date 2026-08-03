@@ -1,4 +1,4 @@
-# APM Customs Brokerage — Corporate Website
+# APM Customs Brokerage — Website
 
 > A responsive static corporate website for APM Customs Brokerage, built to showcase company services and generate client inquiries through a client-side contact form.
 
@@ -58,8 +58,8 @@ This project is a **static, responsive corporate website** built for **APM Custo
 
 ## Demo / Screenshots
 
-| Section | Preview |
-|---|---|
+| Section |
+|---|
 ![Image Description](assets/images/1.png)
 ![Image Description](assets/images/2.png)
 ![Image Description](assets/images/3.png)
