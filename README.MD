@@ -6,8 +6,6 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-7952B3?style=flat&logo=bootstrap&logoColor=white)
-![License](https://img.shields.io/badge/license-[Insert%20License]-lightgrey)
-![Status](https://img.shields.io/badge/status-[Insert%20Status%2C%20e.g.%20In%20Development]-yellow)
 
 ---
 
@@ -62,12 +60,12 @@ This project is a **static, responsive corporate website** built for **APM Custo
 
 | Section | Preview |
 |---|---|
-![Image Description](../assets/images/1.png)
-![Image Description](../assets/images/2.png)
-![Image Description](../assets/images/3.png)
-![Image Description](../assets/images/4.png)
-![Image Description](../assets/images/5.png)
-![Image Description](../assets/images/6.png)
+![Image Description](assets/images/1.png)
+![Image Description](assets/images/2.png)
+![Image Description](assets/images/3.png)
+![Image Description](assets/images/4.png)
+![Image Description](assets/images/5.png)
+![Image Description](assets/images/6.png)
 
 ---
 
