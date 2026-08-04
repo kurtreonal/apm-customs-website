@@ -474,3 +474,44 @@ function sendMail(){
   });
 })();
 
+/* SERVICE FLIP CARDS
+   Desktop: mouseenter/mouseleave. Mobile: click/tap. Keyboard: Enter/Space.
+   Nothing else — the flip itself only ever depends on .is-flipped. */
+(function () {
+  const serviceSelect = document.getElementById("service");
+
+  document.querySelectorAll(".flip-card").forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      card.classList.add("is-flipped");
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.classList.remove("is-flipped");
+    });
+
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".flip-card-cta")) return; // let the CTA link do its own thing
+      card.classList.toggle("is-flipped");
+    });
+
+    card.addEventListener("keydown", (e) => {
+      if (e.target.closest(".flip-card-cta")) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        card.classList.toggle("is-flipped");
+      }
+    });
+  });
+
+  // "Request This Service" -> pre-fill the contact form's service dropdown.
+  // The scroll to #contact itself is handled natively (html{scroll-behavior:smooth}).
+  document.querySelectorAll(".flip-card-cta[data-service]").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (!serviceSelect) return;
+      serviceSelect.value = link.dataset.service;
+      serviceSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  });
+})();
+
+

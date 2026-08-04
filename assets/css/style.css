@@ -22,6 +22,7 @@ img, svg, video, canvas{
 :root{
     --primary:#0284C7;
     --primary-dark:#0369A1;
+    --primary-orange: #f97216;
     --dark:#0F172A;
     --heading:#1E293B;
     --body-text:#64748B;
@@ -29,7 +30,8 @@ img, svg, video, canvas{
     --badge-bg:#E0F2FE;
     --icon-bg:#F0F9FF;
     --border-c:#E2E8F0;
-    --bs-body-font-family:"Inter", sans-serif;}
+    --bs-body-font-family:"Inter", sans-serif;
+}
 
 html,body{
     font-family: 'Inter',sans-serif !important;
@@ -528,6 +530,98 @@ h2 {
     color: #fff;
     font-size: 1.2rem;
     margin: 0 auto 1rem auto;
+}
+
+/* SERVICE FLIP CARDS */
+.flip-card{
+    height: 275px;
+    perspective: 1500px;
+    cursor: pointer;
+    outline-offset: 4px;
+}
+.flip-card:focus-visible{
+    outline: 2px solid var(--primary);
+}
+.flip-card-inner{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform .35s ease-in-out;
+    transform-style: preserve-3d;
+}
+.flip-card.is-flipped .flip-card-inner{
+    transform: rotateY(180deg);
+}
+/* Flip trigger is JS-driven (see main.js) so hovering off can have a
+   delay before flipping back — CSS :hover can't do that on its own.
+   .is-flipped is the single source of truth for the rotation. */
+.flip-card-front,
+.flip-card-back{
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Same resting look as .card-custom (background/border/radius/
+       padding), copied directly instead of sharing the class — these
+       faces must NEVER pick up .card-custom's :hover rule (it adds
+       translateY + box-shadow, which was fighting this rotation). */
+    background: #fff;
+    border: 1px solid var(--border-c);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+.flip-card-back{
+    transform: rotateY(180deg);
+    justify-content: space-between;
+}
+.flip-card-front p{
+    flex: 1;
+    color: var(--body-text);
+}
+.flip-card-back p{
+    flex: 1;
+    color: var(--body-text);
+}
+.flip-card-learnmore{
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: .85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    cursor: pointer;
+    align-self: flex-start;
+    min-height: 44px;
+}
+.flip-card-cta{
+    color: var(--primary);
+    font-weight: 600;
+    font-size: .9rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 44px;
+    align-self: flex-start;
+}
+.flip-card-cta:hover{
+    text-decoration: none;
+    color: var(--primary-orange);
+}
+@media (min-width: 720px){
+    .flip-card{ height: 255x; }
+}
+@media (min-width: 1040px){
+    .flip-card{ height: 275px; }
+}
+@media (prefers-reduced-motion: reduce){
+    .flip-card-inner{ transition: none; }
 }
 
 section{
